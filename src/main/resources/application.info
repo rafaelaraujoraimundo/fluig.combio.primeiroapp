@@ -1,0 +1,15 @@
+application.type=widget
+application.code=fluig.combio.primeiraapp
+application.title=Combio Fluig - Primeiro App
+application.description=Exemplo Combio Fluig - Primeiro App
+application.category=combio
+application.renderer=freemarker
+application.icon=icon.png
+application.uiwidget=true
+developer.code=rafael.araujo
+developer.name=Rafael Araujo
+developer.url=http\://www.totvs.com
+view.file=view.ftl
+locale.file.base.name=fluig.combio.primeiraapp
+simple.deploy=true
+application.mobileapp=false

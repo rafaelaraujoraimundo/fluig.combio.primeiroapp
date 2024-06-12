@@ -1,0 +1,151 @@
+
+
+application.info
+NOme unico
+application.code=fluig.combio.primeiraapp
+application.title=Primeira App Combio Fluig Angular
+locale.file.base.name=fluig.combio.primeiraapp - mesmo do application.code
+pom.xml
+<artifactId>fluig.combio.primeiraapp</artifactId>
+<name>Widget Live Code com Angular</name>
+<description>Widget Live Code com Angular</description>
+
+
+jboss-web.xml - caminho da onde vai acessar
+ <context-root>/fluig-combio-primeiraapp</context-root>
+
+
+ Instalar o app Angular
+ Com a opção skip-install para configurar algumas coisas nates de instalar as dependencias
+
+ ng new angular-app --skip-install
+
+
+COpiar e colocar dentro do POM.xml
+  <build>
+        <plugins>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>src/main/angular-app/node_modules</directory>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<!-- optional: you don't really need execution ids, but it looks nice in your build log. -->
+						<id>install node and npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<!-- optional: default phase is "generate-resources" -->
+						<phase>generate-resources</phase>
+					</execution>
+					<execution>
+						<id>npm install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm run</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run build-prod</arguments>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<nodeVersion>v18.16.1</nodeVersion>
+					<workingDirectory>src/main/angular-app</workingDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+        <finalName>${project.artifactId}</finalName>
+    </build>
+
+    1- copiar dentro do jboss-web.xml
+    fluig-combio-primeiraapp
+       <context-root>/fluig-combio-primeiraapp</context-root>
+       sbustituir
+
+
+Criar o comando build-prod no package.json:
+
+
+
+"build-prod": "ng build --output-hashing none"
+
+
+
+Adicionar o arquivo .gitignore na raiz:
+
+/target/
+node_modules/
+node/
+dist/
+.angular/
+.vscode/
+src/main/webapp/resources/*
+!src/main/webapp/resources/images/icon.png
+
+Alterar o outputPath dentro do arquivo “angular.json” para:
+
+
+
+"outputPath": "../webapp/resources/js",
+
+
+
+Configurar o deployUrl (atenção ao context-root definido anteriormente):
+
+
+
+"deployUrl": "/widgetlivecode/resources/js/",
+
+
+
+Adicionar conteúdo do index.html no view.ftl (somente a tag e os resources):
+
+https://git.fluig.com/users/bruno.freitas/repos/widget-live-code/browse/src/main/resources/view.ftl?at=refs%2Fheads%2Ffeature%2Fadd-angular
+
+Rodar o comando para compilação novamente (sem o argumento clean):
+
+
+
+> mvn install
+
+
+
+Enviar a widget pela central de componentes:
+Painel de Controle > Central de componentes
+Escolher o <ARTEFATO>.war e enviar
+
+Criar uma página para adicionar a  widget:
+Painel de Controle > Minhas páginas
+Criar página
+Preencher as informações do wizard (atenção ao código da página)
+Finalizar wizard
+
+No builder, adicionar a widget na página:
+No menu lateral esquerdo, clicar em Todas na categoria Personalizado
+No modal de widget, filtrar pelo título dela “Exemplo widget com Angular”
+Arrastar ela para qualquer slot da página
+Publicar a página
+
+Fim!
+
+
